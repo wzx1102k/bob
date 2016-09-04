@@ -25,3 +25,5 @@ http://blog.csdn.net/haidao2009/article/details/7514787
 
 https://www.pyimagesearch.com/pyimagesearch-gurus/
 
+https://github.com/opencv/opencv/tree/master/data/haarcascades
+
