@@ -95,7 +95,7 @@ auto()
 	create $P_VEC $P_INFO $P_BG $P_NUM $P_DIR $4
 	create $N_VEC $N_INFO $N_BG $N_NUM $N_DIR $N_SIZE
 
-	CLASS=classifier
+	CLASS=cat_classifier
 	NPOS=360
 	NNEG=120
 	NSTAGE=5
