@@ -22,3 +22,6 @@ adaboost
 http://blog.csdn.net/tiandijun/article/details/48036025
 http://blog.csdn.net/haidao2009/article/details/7514787
 
+
+https://www.pyimagesearch.com/pyimagesearch-gurus/
+
