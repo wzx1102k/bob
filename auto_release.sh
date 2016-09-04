@@ -13,7 +13,9 @@ echo "4. ./auto_release.sh create samples.vec info.dat bg.txt count img_dir size
 echo "----------training samples-----------------"
 echo "5. ./auto_release.sh train classifier samples.vec n_bg.txt npos nneg nstage size"
 echo "---------auto------------------------------"
-echo "5. ./atuo_release.sh auto pos_dir neg_dir count size"
+echo "5. ./auto_release.sh auto pos_dir neg_dir count size"
+echo "----------test-----------------------------"
+echo "6. ./auto_release.sh test test_dir size"
 exit 0
 fi
 
@@ -59,7 +61,7 @@ create()
 	if [ -f $3 ]; then
 		rm -rf $3
 	fi
-	for i in ./$5/*.png
+	for i in $5/*.png
 	do
 		echo "$i" >> $3
 		echo "$i 1 0 0 $6 $6" >> $2
@@ -102,6 +104,18 @@ auto()
 	train $CLASS $P_VEC $N_BG $NPOS $NNEG $NSTAGE $4
 }
 
+test()
+{
+    VEC=test.vec
+    DAT=test.dat
+    BG=test.txt
+    NUM=`find $1 -type f -print|wc -l`
+    resize $1 $2
+	cd $1
+    create $VEC $DAT $BG $NUM . $2
+	opencv_performance -data ../cat_classifier.xml -info $DAT -ni
+}
+
 if [ -z $2 ]; then
 echo "no dir to conv or copy"
 exit 0
@@ -125,6 +139,10 @@ fi
 
 if [ "$1" == "auto" ]; then
 	auto $2 $3 $4 $5
+fi
+
+if [ "$1" == "test" ]; then
+    test $2 $3
 fi
 
 
