@@ -6,4 +6,19 @@ http://www.xuebuyuan.com/2106552.html
 http://www.computer-vision-software.com/blog/2009/11/faq-opencv-haartraining/
 http://stackoverflow.com/questions/8697385/opencv-2-3-1-how-to-tell-if-haartraining-is-stuck-or-still-working-on-tiny-exa
 http://blog.csdn.net/huixingshao/article/details/44561385
+http://answers.opencv.org/question/3085/why-always-opencv-error-assertion-failed-elements_read-1-in-unknown-function/
+http://blog.csdn.net/woaipaoche/article/details/41517089
+vec-file has to contain >= (numPos + (numStages-1) * (1 - minHitRate) * numPos) + S
+7000 >= (numPos + (20-1) * (1 - 0.999) * numPos) + 2973
+
+(7000 - 2973)/(1 + 19*0.001) >= numPos
+
+numPos <= 4027/1.019
+
+numPos <= 3951 ~~ 3950
+-npos 3950 -nneg 2973
+
+adaboost
+http://blog.csdn.net/tiandijun/article/details/48036025
+http://blog.csdn.net/haidao2009/article/details/7514787
 
