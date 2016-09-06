@@ -1,0 +1,13 @@
+cmake_minimum_required(VERSION 2.8.12.2)
+project(bob)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(OpenCV_DIR /home/cloud/opencv3.0/opencv-3.0.0-alpha/release)
+include_directories(/home/cloud/opencv_lib/include)
+include_directories(./src)
+find_package(OpenCV REQUIRED)
+link_directories(/usr/local/lib)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+aux_source_directory(./src SOURCE_FILES)
+add_executable(bob ${SOURCE_FILES})
+target_link_libraries(bob ${OpenCV_LIBS})
