@@ -50,11 +50,18 @@ copy()
 resize()
 {
 echo "$2"X"$2"
+	for i in ./$1/1*
+	do
+		DIR=${i##*.}
+		break
+	done
 	for i in ./$1/*
 	do
 		convert $i -colorspace Gray $i
 		convert $i -resize $2X$2 ${i%.*}.bmp
-		rm -rf $i
+		if [ "$DIR" != "bmp" ]; then
+			rm -rf $i
+		fi
 	done
 }
 
