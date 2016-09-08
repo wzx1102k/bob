@@ -22,7 +22,7 @@ fi
 conv()
 {
 	j=1
-	for i in ./$1/*.*
+	for i in ./$1/*
 	do
 		mv 	$i ./$1/$j.jpg
 		j=`expr $j + 1`
@@ -36,21 +36,26 @@ copy()
 	else
 		mkdir $2			
 	fi
+	for i in ./$1/1*
+	do
+		DIR=${i##*.}
+		break
+	done
 	for((i=1; i<=$3;i++));
 	do
-		cp ./$1/$i.jpg $2 
+		cp ./$1/$i.$DIR $2 2>/dev/NULL
 	done
 }
 
 resize()
 {
 echo "$2"X"$2"
-	for i in ./$1/*.jpg
+	for i in ./$1/*
 	do
 		convert $i -colorspace Gray $i
 		convert $i -resize $2X$2 ${i%.*}.bmp
+		rm -rf $i
 	done
-	rm -rf ./$1/*.jpg
 }
 
 create()
@@ -62,7 +67,7 @@ create()
 	if [ -f $3 ]; then
 		rm -rf $3
 	fi
-	for i in $5/*.bmp
+	for i in $5/*
 	do
 		echo "$i" >> $3
 		echo "$i 1 0 0 $6 $6" >> $2
@@ -88,21 +93,21 @@ auto()
 	N_SIZE=100
 	N_DIR=n_image
 
-	#copy $1 $P_DIR $3
-	#copy $2 $N_DIR $3
-	#resize $P_DIR $4
-	#resize $N_DIR $N_SIZE
+	copy $1 $P_DIR $3
+	copy $2 $N_DIR $3
+	resize $P_DIR $4
+	resize $N_DIR $N_SIZE
 
-	P_NUM=`find $P_DIR -type f -print|wc -l`
-	N_NUM=`find $N_DIR -type f -print|wc -l`
+	echo P_NUM=`find $P_DIR -type f -print|wc -l`
+	echo N_NUM=`find $N_DIR -type f -print|wc -l`
 	create $P_VEC $P_INFO $P_BG $P_NUM $P_DIR $4
 	create $N_VEC $N_INFO $N_BG $N_NUM $N_DIR $N_SIZE
 
 	CLASS=cat_classifier
 	#NPOS=360
 	#NNEG=120
-	NNEG=$[$3/4]	
-	NPOS=$[$3-$NNEG-5]	
+	echo NNEG=$[$3/4]	
+	echo NPOS=$[$3-$NNEG-5]	
 	NSTAGE=5
 	train $CLASS $P_VEC $N_BG $NPOS $NNEG $NSTAGE $4
 }
