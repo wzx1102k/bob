@@ -105,16 +105,16 @@ auto()
 	resize $P_DIR $4
 	resize $N_DIR $N_SIZE
 
-	echo P_NUM=`find $P_DIR -type f -print|wc -l`
-	echo N_NUM=`find $N_DIR -type f -print|wc -l`
+	P_NUM=`find $P_DIR -type f -print|wc -l`
+	N_NUM=`find $N_DIR -type f -print|wc -l`
 	create $P_VEC $P_INFO $P_BG $P_NUM $P_DIR $4
 	create $N_VEC $N_INFO $N_BG $N_NUM $N_DIR $N_SIZE
 
 	CLASS=cat_classifier
 	#NPOS=360
 	#NNEG=120
-	echo NNEG=$[$3/4]	
-	echo NPOS=$[$3-$NNEG-5]	
+	NNEG=$[$3/4]	
+	NPOS=$[$3-$NNEG-5]	
 	NSTAGE=5
 	train $CLASS $P_VEC $N_BG $NPOS $NNEG $NSTAGE $4
 }
