@@ -21,10 +21,22 @@ fi
 
 conv()
 {
+	for i in ./$1/1*
+	do
+		DIR=${i##*.}
+		break
+	done
 	j=1
 	for i in ./$1/*
 	do
-		mv 	$i ./$1/$j.jpg
+		mv $i ./$1/$j
+		j=`expr $j + 1`
+	done
+
+	j=1
+	for i in ./$1/*
+	do
+		mv $i ./$1/$j.$DIR
 		j=`expr $j + 1`
 	done
 }
@@ -85,7 +97,7 @@ create()
 train()
 {
 	#opencv_haartraining -data classifier -vec p_samples.vec -bg n_bg.txt -npos 360 -nneg 120 -nstages 5 -w 50 -h 50
-	opencv_haartraining -data $1 -vec $2 -bg $3 -mem 500 -npos $4 -nneg $5 -nstages $6 -w $7 -h $7 -minhitrate 0.999
+	opencv_haartraining -data $1 -vec $2 -bg $3 -mem 500 -npos $4 -nneg $5 -nstages $6 -w $7 -h $7 -minhitrate 0.999 -mode ALL
 }
 
 auto()
@@ -110,12 +122,12 @@ auto()
 	create $P_VEC $P_INFO $P_BG $P_NUM $P_DIR $4
 	create $N_VEC $N_INFO $N_BG $N_NUM $N_DIR $N_SIZE
 
-	CLASS=cat_classifier
+	CLASS=sample_classifier
 	#NPOS=360
 	#NNEG=120
 	NNEG=$[$3/4]	
 	NPOS=$[$3-$NNEG-5]	
-	NSTAGE=5
+	NSTAGE=20
 	train $CLASS $P_VEC $N_BG $NPOS $NNEG $NSTAGE $4
 }
 
@@ -128,7 +140,7 @@ test()
     resize $1 $2
 	cd $1
     create $VEC $DAT $BG $NUM . $2
-	opencv_performance -data ../cat_classifier.xml -info $DAT -ni
+	opencv_performance -data ../sample_classifier.xml -info $DAT -ni
 }
 
 if [ -z $2 ]; then

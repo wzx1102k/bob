@@ -18,6 +18,10 @@ numPos <= 4027/1.019
 numPos <= 3951 ~~ 3950
 -npos 3950 -nneg 2973
 
+ 测试最终分类器性能
+  这部分工作通过简单地调用两个函数实现。调用 icvGetHaarTrainingDataFromVec 测试
+检出率；通过调用 icvGetHaarTrainingDataFromBG测试虚警率。 
+
 adaboost
 http://blog.csdn.net/tiandijun/article/details/48036025
 http://blog.csdn.net/haidao2009/article/details/7514787

@@ -10,6 +10,10 @@ using namespace std;
 
 
 int main(int argc, char* argv[]) {
+    if(argc != 4) {
+        printf("Usage: ./bob srcDir desDir xx.xml\n");
+        return -1;
+    }
     cat_sample_create(argv[1], argv[2], argv[3]);
     return 0;
 }

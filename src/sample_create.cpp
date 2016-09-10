@@ -24,6 +24,8 @@ int cat_sample_create(const char* srcDir, const char* desDir, const char* cascad
     faceCascade.load(cascade);   //加载分类器，注意文件路径
     Mat srcImg, grayImg, roiImg;
     vector<Rect> faces;
+    vector<int> rejLevel;
+    vector<double> levelW;
 
     printf("srcDir: %s\n", srcDir);
     printf("desDir: %s\n", desDir);
@@ -46,11 +48,15 @@ int cat_sample_create(const char* srcDir, const char* desDir, const char* cascad
         } else {
             grayImg = srcImg;
         }
-
-        faceCascade.detectMultiScale(grayImg, faces, 1.1, 3, 0, Size(0, 0));   //检测人脸
-
+        faceCascade.detectMultiScale(grayImg, faces, rejLevel, levelW, 1.1, 3, 0, Size(), Size(), true);   //检测人脸
         if(faces.size()>0) {
             for(int i =0; i<faces.size(); i++) {
+                if(rejLevel[i] < 0) {
+                    continue;
+                }
+                cout << "rejLevel: " << rejLevel[i] << endl;
+                cout << "levelW: " << levelW[i] << endl;
+
                 memset(cutPath, 0, sizeof(cutPath));
                 snprintf(cutPath, sizeof(cutPath), "./%s/%d.bmp", desDir, count);
                 printf("cutPath = %s\n", cutPath);
