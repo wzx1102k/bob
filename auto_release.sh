@@ -10,12 +10,14 @@ echo "--------resize images to 200X200------------"
 echo "3. ./auto_release.sh resize dir size"
 echo "--------create samples---------------------"
 echo "4. ./auto_release.sh create samples.vec info.dat bg.txt count img_dir size"
-echo "----------training samples-----------------"
-echo "5. ./auto_release.sh train classifier samples.vec n_bg.txt npos nneg nstage size"
+echo "----------harr training samples-----------------"
+echo "5. ./auto_release.sh harr_train classifier samples.vec n_bg.txt npos nneg nstage size"
+echo "----------lbp training samples-----------------"
+echo "5. ./auto_release.sh lbp_train classifier samples.vec n_bg.txt npos nneg nstage size"
 echo "---------auto------------------------------"
-echo "5. ./auto_release.sh auto pos_dir neg_dir count size"
+echo "7. ./auto_release.sh auto pos_dir neg_dir count size type"
 echo "----------test-----------------------------"
-echo "6. ./auto_release.sh test test_dir size"
+echo "8. ./auto_release.sh test test_dir size"
 exit 0
 fi
 
@@ -94,10 +96,16 @@ create()
 	opencv_createsamples -vec $1 -info $2 -bg $3 -num $4 -w $6 -h $6
 }
 
-train()
+harr_train()
 {
 	#opencv_haartraining -data classifier -vec p_samples.vec -bg n_bg.txt -npos 360 -nneg 120 -nstages 5 -w 50 -h 50
-	opencv_haartraining -data $1 -vec $2 -bg $3 -mem 500 -npos $4 -nneg $5 -nstages $6 -w $7 -h $7 -minhitrate 0.999 -mode ALL
+	#opencv_haartraining -data $1 -vec $2 -bg $3 -mem 500 -npos $4 -nneg $5 -nstages $6 -w $7 -h $7 -minhitrate 0.999 -mode ALL
+    opencv_traincascade -data $1 -vec $2 -bg $3 -numPos $4 -numNeg $5 -numStages $6 -featureType HARR -w $7 -h $7 -mode BASIC
+}
+
+lbp_train()
+{
+    opencv_traincascade -data $1 -vec $2 -bg $3 -numPos $4 -numNeg $5 -numStages $6 -precalcdxBufSize 1000 -featureType LBP -w $7 -h $7 -minHitRate 0.999 -mode BASIC -maxFalseAlarmRate 0.3
 }
 
 auto()
@@ -125,10 +133,17 @@ auto()
 	CLASS=sample_classifier
 	#NPOS=360
 	#NNEG=120
-	NNEG=$[$3/4]	
-	NPOS=$[$3-$NNEG-5]	
+	#NNEG=$[$3/4]	
+	NNEG=2000	
+	#NPOS=$[$3-$NNEG-5]	
+	NPOS=1200	
 	NSTAGE=20
-	train $CLASS $P_VEC $N_BG $NPOS $NNEG $NSTAGE $4
+	echo $5
+    if [ "$5" == "harr" ]; then
+	    harr_train $CLASS $P_VEC $N_BG $NPOS $NNEG $NSTAGE $4
+    else
+        lbp_train $CLASS $P_VEC $N_BG $NPOS $NNEG $NSTAGE $4
+    fi
 }
 
 test()
@@ -165,7 +180,7 @@ if [ "$1" == "create" ]; then
 fi
 
 if [ "$1" == "auto" ]; then
-	auto $2 $3 $4 $5
+	auto $2 $3 $4 $5 $6
 fi
 
 if [ "$1" == "test" ]; then
