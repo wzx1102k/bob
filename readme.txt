@@ -40,3 +40,8 @@ http://www.cnblogs.com/denny402/p/5031181.html
 http://www.cnblogs.com/chensheng-zhou/p/5542887.html
 
 http://www.cnblogs.com/ello/archive/2012/04/28/2475419.html
+
+LBP
+http://blog.csdn.net/zouxy09/article/details/7929531
+http://www.07net01.com/program/651674.html
+http://www.walthelm.net/picture-relate/download.php
