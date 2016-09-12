@@ -134,7 +134,7 @@ auto()
 	#NPOS=360
 	#NNEG=120
 	#NNEG=$[$3/4]	
-	NNEG=2000	
+	NNEG=2400	
 	#NPOS=$[$3-$NNEG-5]	
 	NPOS=1200	
 	NSTAGE=20

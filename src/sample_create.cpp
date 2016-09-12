@@ -35,7 +35,7 @@ int cat_sample_create(const char* srcDir, const char* desDir, const char* cascad
     }
 
     while(entry = readdir(dirptr)) {
-        //printf("entry->d_name: %s\n", entry->d_name);
+        printf("entry->d_name: %s\n", entry->d_name);
         memset(cutPath, 0, sizeof(cutPath));
         snprintf(cutPath, sizeof(cutPath), "./%s/%s", srcDir, entry->d_name);
         srcImg = imread(cutPath);
@@ -48,12 +48,15 @@ int cat_sample_create(const char* srcDir, const char* desDir, const char* cascad
         } else {
             grayImg = srcImg;
         }
+
+        equalizeHist(grayImg, grayImg);  //直方图均衡
         faceCascade.detectMultiScale(grayImg, faces, rejLevel, levelW, 1.1, 3, 0, Size(), Size(), true);   //检测人脸
+        //faceCascade.detectMultiScale(grayImg, faces, rejLevel, levelW, 1.1, 3, 0, Size(20, 20), grayImg.size(), true);   //检测人脸
         if(faces.size()>0) {
             for(int i =0; i<faces.size(); i++) {
-                if(rejLevel[i] < 0) {
+                /*if((rejLevel[i] < 0) || (levelW[i] < 5)) {
                     continue;
-                }
+                }*/
                 cout << "rejLevel: " << rejLevel[i] << endl;
                 cout << "levelW: " << levelW[i] << endl;
 
